@@ -2,17 +2,82 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="360dp"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
-    <TextView
+    <ImageView
+        android:id="@+id/setting.iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/setting"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/card.iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/card_orange"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/card.iv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorFullWidth="true"
+        style="@style/CustomTabLayout"
+        app:tabIndicatorColor="#FF9F5A">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/it"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IT/과학"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="세계"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/culture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="생활/문화"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/society"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사회"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="경제"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/tab_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tablayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
