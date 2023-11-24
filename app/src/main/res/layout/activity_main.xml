@@ -7,32 +7,154 @@
     tools:context=".MainActivity"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/setting.iv"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/setting"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-
-    <ImageView
-        android:id="@+id/card.iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/card_blue"
-        android:layout_marginTop="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#B9e0fd">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/setting"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/card_blue"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/weather"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toTopOf="@id/card"
+            app:layout_constraintStart_toStartOf="@id/card"
+            app:layout_constraintEnd_toEndOf="@id/card"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#B9e0fd"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/weather"
+            app:layout_constraintStart_toStartOf="@id/card"
+            app:layout_constraintEnd_toEndOf="@id/card"/>
+
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"
+            android:textSize="20sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintStart_toStartOf="@id/card"/>
+
+        <TextView
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginStart="5dp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toTopOf="@id/date"
+            app:layout_constraintStart_toEndOf="@id/date"/>
+
+        <TextView
+            android:id="@+id/temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="50dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toTopOf="@id/date"
+            app:layout_constraintStart_toStartOf="@id/card"/>
+
+        <TextView
+            android:id="@+id/max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:textSize="15sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/temp"
+            app:layout_constraintStart_toStartOf="@id/card"/>
+
+        <TextView
+            android:id="@+id/min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/temp"
+            app:layout_constraintStart_toEndOf="@id/max"/>
+
+        <TextView
+            android:id="@+id/wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/min"
+            app:layout_constraintStart_toStartOf="@id/max"/>
+
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/min"
+            app:layout_constraintStart_toEndOf="@id/wind"/>
+
+        <TextView
+            android:id="@+id/cloud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#B9e0fd"
+            app:layout_constraintTop_toBottomOf="@id/min"
+            app:layout_constraintStart_toEndOf="@id/humidity"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/card.iv"
+        app:layout_constraintTop_toBottomOf="@id/top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tabIndicatorGravity="bottom"
@@ -79,5 +201,8 @@
         app:layout_constraintTop_toBottomOf="@id/tablayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
