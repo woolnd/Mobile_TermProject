@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
-
         //도시를 파라미터로 날씨 정보를 업데이트 해줌
         loadWeatherInfo(city);
 
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         // 시간대에 따라 배경 이미지 및 글자 색상 변경
         //9시부터 18시전에는 낮에 대한 이미지와 파란 글자색으로 변경
         if(time<18 && time >=9){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.afternoon));
             top.setBackgroundResource(R.drawable.afternoon);
             description_view.setTextColor(Color.parseColor("#99ccff"));
             date_view.setTextColor(Color.parseColor("#99ccff"));
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //21시부터 06시전에는 밤에 대한 이미지와 남색 글자색 변경
         else if(time>=21 || time < 6){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.night));
             top.setBackgroundResource(R.drawable.night);
             description_view.setTextColor(Color.parseColor("#000080"));
             date_view.setTextColor(Color.parseColor("#000080"));
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //나머지 시간대는 새벽, 초저녁에 대한 이미지와 주황 글자색 변경
         else{
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dawn));
             top.setBackgroundResource(R.drawable.dawn);
             description_view.setTextColor(Color.parseColor("#FF9500"));
             date_view.setTextColor(Color.parseColor("#FF9500"));

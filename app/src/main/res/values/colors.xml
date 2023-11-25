@@ -3,5 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="day">#B9e0fd</color>
-    <color name="night"></color>
+    <color name="night">#000205</color>
+    <color name="dawn">#F2CA74</color>
+    <color name="afternoon">#338EC9</color>
 </resources>
