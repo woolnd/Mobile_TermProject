@@ -1,23 +1,35 @@
 package com.example.termproject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +38,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -40,25 +54,78 @@ public class MainActivity extends AppCompatActivity {
     // 기본 API 키 및 도시 설정
     String api = "097176059f7a6fe3934a296004c7abcf";
     String city = "Ulsan";
-    TextView city_view, temp_view, max_view, wind_view, humidity_view, cloud_view, min_view, description_view;
+    TextView city_view, temp_view, feel_view, wind_view, humidity_view, cloud_view, description_view;
     private static final int REQUEST_CODE = 1; //SettingActivity로 전환할 때 사용할 요청 코드
+    private ViewPager2 viewPager;
+    private PagerAdapter pagerAdapter;
+    private TodayFragment frag1;
+    private YesterdayFragment frag2;
+    private TabLayout tabLayout;
+
+    private FloatingActionButton fab_main, fab_mypage, fab_search;
+    private Animation fab_open, fab_close;
+    private boolean isFabOpen = false;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //도시를 파라미터로 날씨 정보를 업데이트 해줌
+        mContext = getApplicationContext();
+        fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
+
+        fab_main = findViewById(R.id.fab_main);
+        fab_mypage = findViewById(R.id.fab_mypage);
+        fab_search = findViewById(R.id.fab_search);
+
+        fab_mypage.startAnimation(fab_close);
+        fab_mypage.setClickable(false);
+        fab_search.startAnimation(fab_close);
+        fab_search.setClickable(false);
+
+        fab_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFab();
+            }
+        });
+
+
+
+        PagerAdapter viewPager2Adapter
+                = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
+        ViewPager2 viewPager2 = findViewById(R.id.vp);
+        viewPager2.setAdapter(viewPager2Adapter);
+
+        //=== TabLayout기능 추가 부분 ============================================
+        TabLayout tabLayout = findViewById(R.id.tablayout);
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0:
+                        tab.setText("오늘");
+                        break;
+                    case 1:
+                        tab.setText("어제");
+                        break;
+                    // 필요한 만큼 case 추가
+                }
+            }
+        }).attach();
+
         loadWeatherInfo(city);
+
 
         // 각종 TextView와 ImageView 초기화
         city_view = findViewById(R.id.title);
         temp_view = findViewById(R.id.temp);
-        max_view = findViewById(R.id.max);
+        feel_view = findViewById(R.id.feel);
         wind_view = findViewById(R.id.wind);
         humidity_view = findViewById(R.id.humidity);
         cloud_view = findViewById(R.id.cloud);
-        min_view = findViewById(R.id.min);
         description_view = findViewById(R.id.description);
 
         TextView date_view = findViewById(R.id.date);
@@ -114,8 +181,7 @@ public class MainActivity extends AppCompatActivity {
             date_view.setTextColor(Color.parseColor("#99ccff"));
             week_view.setTextColor(Color.parseColor("#99ccff"));
             temp_view.setTextColor(Color.parseColor("#99ccff"));
-            max_view.setTextColor(Color.parseColor("#99ccff"));
-            min_view.setTextColor(Color.parseColor("#99ccff"));
+            feel_view.setTextColor(Color.parseColor("#99ccff"));
             wind_view.setTextColor(Color.parseColor("#99ccff"));
             humidity_view.setTextColor(Color.parseColor("#99ccff"));
             cloud_view.setTextColor(Color.parseColor("#99ccff"));
@@ -129,8 +195,7 @@ public class MainActivity extends AppCompatActivity {
             date_view.setTextColor(Color.parseColor("#000080"));
             week_view.setTextColor(Color.parseColor("#000080"));
             temp_view.setTextColor(Color.parseColor("#000080"));
-            max_view.setTextColor(Color.parseColor("#000080"));
-            min_view.setTextColor(Color.parseColor("#000080"));
+            feel_view.setTextColor(Color.parseColor("#000080"));
             wind_view.setTextColor(Color.parseColor("#000080"));
             humidity_view.setTextColor(Color.parseColor("#000080"));
             cloud_view.setTextColor(Color.parseColor("#000080"));
@@ -143,8 +208,7 @@ public class MainActivity extends AppCompatActivity {
             date_view.setTextColor(Color.parseColor("#FF9500"));
             week_view.setTextColor(Color.parseColor("#FF9500"));
             temp_view.setTextColor(Color.parseColor("#FF9500"));
-            max_view.setTextColor(Color.parseColor("#FF9500"));
-            min_view.setTextColor(Color.parseColor("#FF9500"));
+            feel_view.setTextColor(Color.parseColor("#FF9500"));
             wind_view.setTextColor(Color.parseColor("#FF9500"));
             humidity_view.setTextColor(Color.parseColor("#FF9500"));
             cloud_view.setTextColor(Color.parseColor("#FF9500"));
@@ -155,11 +219,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                String email = getIntent().getStringExtra("email");
+                String name = getIntent().getStringExtra("name");
+                String url = getIntent().getStringExtra("url");
+                intent.putExtra("email", email);
+                intent.putExtra("name", name);
+                intent.putExtra("url", url);
+                intent.putExtra("city", city);
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
-
+    
     //url로 이미지를 가져와 변환 후 imageview에 적용
     private void loadImage(String imageUrl) {
         new Thread(new Runnable() {
@@ -260,13 +331,9 @@ public class MainActivity extends AppCompatActivity {
                     String temp_format = "현재 "+String.format("%.2f", temp)+"°C"; // 두 번째 소수 자리까지 포맷팅
                     temp_view.setText(temp_format); // TextView에 출력
 
-                    double temp_max = mainObject.get("temp_max").getAsDouble() - 275.15; // "temp_max"(최고기온)값을 받아서 변환한 후 계산
-                    String temp_max_format = "최고 "+String.format("%.2f", temp_max)+"°C"; // 두 번째 소수 자리까지 포맷팅
-                    max_view.setText(temp_max_format); // TextView에 출력
-
-                    double temp_min = mainObject.get("temp_min").getAsDouble() - 275.15; // "temp_min"(최저기온)값을 받아서 변환한 후 계산
-                    String temp_min_format = " / 최저 "+String.format("%.2f", temp_min)+"°C"; // 두 번째 소수 자리까지 포맷팅
-                    min_view.setText(temp_min_format); // TextView에 출력
+                    double feel_like = mainObject.get("feels_like").getAsDouble() - 275.15; // "temp_max"(최고기온)값을 받아서 변환한 후 계산
+                    String feel_like_format = "체감 "+String.format("%.2f", feel_like)+"°C"; // 두 번째 소수 자리까지 포맷팅
+                    feel_view.setText(feel_like_format); // TextView에 출력
 
                     JsonObject windObject = response.body().getAsJsonObject("wind"); // 바람 관련 정보 처리
                     double wind = windObject.get("speed").getAsDouble(); //"speed"(속력)값을 받아서 저장
@@ -308,4 +375,23 @@ public class MainActivity extends AppCompatActivity {
         String title = city + "의 날씨";
         city_view.setText(title); // TextView에 제목 다시 설정
     }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            fab_main.setImageResource(R.drawable.fab_main_1);
+            fab_mypage.startAnimation(fab_close);
+            fab_mypage.setClickable(false);
+            fab_search.startAnimation(fab_close);
+            fab_search.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab_main.setImageResource(R.drawable.fab_main_2);
+            fab_mypage.startAnimation(fab_open);
+            fab_mypage.setClickable(true);
+            fab_search.startAnimation(fab_open);
+            fab_search.setClickable(true);
+            isFabOpen = true;
+        }
+    }
+
 }

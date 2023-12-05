@@ -103,7 +103,7 @@
             app:layout_constraintStart_toStartOf="@id/card"/>
 
         <TextView
-            android:id="@+id/max"
+            android:id="@+id/feel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -113,22 +113,13 @@
             app:layout_constraintStart_toStartOf="@id/card"/>
 
         <TextView
-            android:id="@+id/min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#B9e0fd"
-            app:layout_constraintTop_toBottomOf="@id/temp"
-            app:layout_constraintStart_toEndOf="@id/max"/>
-
-        <TextView
             android:id="@+id/wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#B9e0fd"
-            app:layout_constraintTop_toBottomOf="@id/min"
-            app:layout_constraintStart_toStartOf="@id/max"/>
+            app:layout_constraintTop_toBottomOf="@id/feel"
+            app:layout_constraintStart_toStartOf="@id/feel"/>
 
         <TextView
             android:id="@+id/humidity"
@@ -136,7 +127,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#B9e0fd"
-            app:layout_constraintTop_toBottomOf="@id/min"
+            app:layout_constraintTop_toBottomOf="@id/feel"
             app:layout_constraintStart_toEndOf="@id/wind"/>
 
         <TextView
@@ -145,7 +136,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#B9e0fd"
-            app:layout_constraintTop_toBottomOf="@id/min"
+            app:layout_constraintTop_toBottomOf="@id/feel"
             app:layout_constraintStart_toEndOf="@id/humidity"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -160,49 +151,52 @@
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorFullWidth="true"
         style="@style/CustomTabLayout"
-        app:tabIndicatorColor="#B9e0fd">
+        app:tabIndicatorColor="#B9e0fd"
+        android:contentDescription="탭"/>
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/it"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="IT/과학"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="세계"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/culture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="생활/문화"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/society"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="사회"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="경제"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <FrameLayout
-        android:id="@+id/tab_fragment"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/tablayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:contentDescription="main"
+        android:src="@drawable/fab_main_1"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_mypage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="mypage"
+        android:src="@drawable/fab_mypage"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/fab_main"
+        app:layout_constraintEnd_toEndOf="@id/fab_main"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="search"
+        android:src="@drawable/fab_search"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/fab_mypage"
+        app:layout_constraintEnd_toEndOf="@id/fab_mypage"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

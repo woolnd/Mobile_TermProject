@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("name", personName); // 이름 전달
                 intent.putExtra("email", personEmail); // 이메일 전달
-                intent.putExtra("uri", photoUrlString); // 프로필 사진 URL 전달
+                intent.putExtra("url", photoUrlString); // 프로필 사진 URL 전달
                 startActivity(intent); // MainActivity 시작
             }
         } catch (ApiException e) {
