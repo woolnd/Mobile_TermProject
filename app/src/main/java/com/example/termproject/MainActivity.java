@@ -92,6 +92,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        fab_mypage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                String email = getIntent().getStringExtra("email");
+                String name = getIntent().getStringExtra("name");
+                String url = getIntent().getStringExtra("url");
+                intent.putExtra("email", email);
+                intent.putExtra("name", name);
+                intent.putExtra("url", url);
+                intent.putExtra("city", city);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+
+        fab_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
         PagerAdapter viewPager2Adapter
@@ -100,16 +123,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(viewPager2Adapter);
 
         //=== TabLayout기능 추가 부분 ============================================
-        TabLayout tabLayout = findViewById(R.id.tablayout);
+        tabLayout  = findViewById(R.id.tablayout);
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0:
-                        tab.setText("오늘");
+                        tab.setText("오늘의 뉴스");
                         break;
                     case 1:
-                        tab.setText("어제");
+                        tab.setText("어제의 뉴스");
                         break;
                     // 필요한 만큼 case 추가
                 }
@@ -131,8 +154,6 @@ public class MainActivity extends AppCompatActivity {
         TextView date_view = findViewById(R.id.date);
         TextView week_view = findViewById(R.id.week);
         ConstraintLayout top = findViewById(R.id.top);
-
-        ImageView setting = findViewById(R.id.setting);
 
         //최상단에 표시할 도시 작성
         String title = city + "의 날씨";
@@ -186,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
             humidity_view.setTextColor(Color.parseColor("#99ccff"));
             cloud_view.setTextColor(Color.parseColor("#99ccff"));
 
+            tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#5AA6FF"));
+
         }
         //21시부터 06시전에는 밤에 대한 이미지와 남색 글자색 변경
         else if(time>=21 || time < 6){
@@ -199,9 +222,11 @@ public class MainActivity extends AppCompatActivity {
             wind_view.setTextColor(Color.parseColor("#000080"));
             humidity_view.setTextColor(Color.parseColor("#000080"));
             cloud_view.setTextColor(Color.parseColor("#000080"));
+
+            tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#6A6AFF"));
         }
         //나머지 시간대는 새벽, 초저녁에 대한 이미지와 주황 글자색 변경
-        else{
+        else {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.dawn));
             top.setBackgroundResource(R.drawable.dawn);
             description_view.setTextColor(Color.parseColor("#FF9500"));
@@ -212,23 +237,9 @@ public class MainActivity extends AppCompatActivity {
             wind_view.setTextColor(Color.parseColor("#FF9500"));
             humidity_view.setTextColor(Color.parseColor("#FF9500"));
             cloud_view.setTextColor(Color.parseColor("#FF9500"));
-        }
 
-        //setting 이미지 클릭 시 SettingActivity 화면 전환
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                String email = getIntent().getStringExtra("email");
-                String name = getIntent().getStringExtra("name");
-                String url = getIntent().getStringExtra("url");
-                intent.putExtra("email", email);
-                intent.putExtra("name", name);
-                intent.putExtra("url", url);
-                intent.putExtra("city", city);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
+            tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF9F5A"));
+        }
     }
     
     //url로 이미지를 가져와 변환 후 imageview에 적용

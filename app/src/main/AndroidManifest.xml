@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".SettingActivity" android:exported="false">
         </activity>
+        <activity android:name=".SearchActivity" android:exported="false"></activity>
+        <activity android:name=".NewsActivity" android:exported="false"></activity>
     </application>
 
 </manifest>
