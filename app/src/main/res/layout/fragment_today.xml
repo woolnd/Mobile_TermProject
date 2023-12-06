@@ -15,4 +15,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:clipToPadding="false"
         android:paddingBottom="500dp"/>
+
+    <TextView
+        android:id="@+id/no_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="등록된 뉴스가 없습니다..."
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

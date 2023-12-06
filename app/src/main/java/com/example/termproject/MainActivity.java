@@ -56,13 +56,9 @@ public class MainActivity extends AppCompatActivity {
     String city = "Ulsan";
     TextView city_view, temp_view, feel_view, wind_view, humidity_view, cloud_view, description_view;
     private static final int REQUEST_CODE = 1; //SettingActivity로 전환할 때 사용할 요청 코드
-    private ViewPager2 viewPager;
-    private PagerAdapter pagerAdapter;
-    private TodayFragment frag1;
-    private YesterdayFragment frag2;
     private TabLayout tabLayout;
 
-    private FloatingActionButton fab_main, fab_mypage, fab_search;
+    private FloatingActionButton fab_main, fab_mypage, fab_search, fab_refresh;
     private Animation fab_open, fab_close;
     private boolean isFabOpen = false;
     private Context mContext;
@@ -79,11 +75,14 @@ public class MainActivity extends AppCompatActivity {
         fab_main = findViewById(R.id.fab_main);
         fab_mypage = findViewById(R.id.fab_mypage);
         fab_search = findViewById(R.id.fab_search);
+        fab_refresh = findViewById(R.id.fab_refresh);
 
         fab_mypage.startAnimation(fab_close);
         fab_mypage.setClickable(false);
         fab_search.startAnimation(fab_close);
         fab_search.setClickable(false);
+        fab_refresh.startAnimation(fab_close);
+        fab_refresh.setClickable(false);
 
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        fab_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent(); //인텐트
+                startActivity(intent); //액티비티 열기
+                overridePendingTransition(0, 0);//인텐트 효과 없애기
             }
         });
 
@@ -394,6 +402,8 @@ public class MainActivity extends AppCompatActivity {
             fab_mypage.setClickable(false);
             fab_search.startAnimation(fab_close);
             fab_search.setClickable(false);
+            fab_refresh.startAnimation(fab_close);
+            fab_refresh.setClickable(false);
             isFabOpen = false;
         } else {
             fab_main.setImageResource(R.drawable.fab_main_2);
@@ -401,6 +411,8 @@ public class MainActivity extends AppCompatActivity {
             fab_mypage.setClickable(true);
             fab_search.startAnimation(fab_open);
             fab_search.setClickable(true);
+            fab_refresh.startAnimation(fab_open);
+            fab_refresh.setClickable(true);
             isFabOpen = true;
         }
     }

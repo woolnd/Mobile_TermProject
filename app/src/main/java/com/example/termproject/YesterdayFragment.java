@@ -161,8 +161,8 @@ public class YesterdayFragment extends Fragment {
             }
         }
 
-        for(int i = 0; i< titles.size()*2+2; i++){
-            if(linkMatcher.find() && (i>1)){
+        for(int i = 0; i< titles.size()*2; i++){
+            if(linkMatcher.find()){
                 String link = linkMatcher.group(1);
                 links.add(link.toString());
             }
