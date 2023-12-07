@@ -442,11 +442,17 @@ public class MainActivity extends AppCompatActivity {
                 fab_google.startAnimation(fab_close);
                 fab_naver.startAnimation(fab_close);
                 fab_daum.startAnimation(fab_close);
+                fab_google.setClickable(false);
+                fab_naver.setClickable(false);
+                fab_daum.setClickable(false);
                 isSearch = false;
             }else{
                 fab_google.startAnimation(fab_clear);
                 fab_naver.startAnimation(fab_clear);
                 fab_daum.startAnimation(fab_clear);
+                fab_google.setClickable(false);
+                fab_naver.setClickable(false);
+                fab_daum.setClickable(false);
             }
 
             fab_mypage.setClickable(false);

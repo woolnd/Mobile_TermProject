@@ -32,6 +32,7 @@ public class YesterdayFragment extends Fragment {
 
     private ArrayList<String> images;
     private ArrayList<String> titles;
+    private ArrayList<String> titles_today;
     private ArrayList<String> traffics;
 
     private ArrayList<String> links;
@@ -53,6 +54,7 @@ public class YesterdayFragment extends Fragment {
         traffics = new ArrayList<>();
         links = new ArrayList<>();
         links_array = new ArrayList<>();
+        titles_today = new ArrayList<>();
 
         return inflater.inflate(R.layout.fragment_yesterday, container, false);
     }
@@ -128,6 +130,7 @@ public class YesterdayFragment extends Fragment {
 
         dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul")); // 한국 시간대로 설정
+        todayDate = dateFormat.format(new Date());
 
         // 현재 날짜 구하기
         calendar = Calendar.getInstance();
@@ -152,28 +155,29 @@ public class YesterdayFragment extends Fragment {
             String traffic = trafficMatcher.group(1).replaceAll("[+,]", "");
             String image = imageMatcher.group(1);
 
-            if(date.equals(yesterdayDate)){
+            if(date.equals(todayDate)){
+                titles_today.add(title);
+                Log.d("title1", title);
+            }
+
+            if(date.equals(yesterdayDate)) {
                 titles.add(title);
                 traffics.add(traffic);
                 images.add(image);
-                Log.d("date123", title);
-                Log.d("date123", traffic);
+                Log.d("title1", title);
+
             }
         }
 
-        for(int i = 0; i< titles.size()*2; i++){
+        for(int i = 0; i< (titles.size()+titles_today.size())*2; i++){
             if(linkMatcher.find()){
-                String link = linkMatcher.group(1);
-                links.add(link.toString());
-            }
-        }
-
-
-        for(int i = 0; i< links.size(); i++){
-            if(i == 0 || i%2==0){
-                String link = links.get(i);
-                links_array.add(link);
-                Log.d("date12", link);
+                if(i>titles_today.size()*2-2){
+                    if(i%2!=0){
+                        String link = linkMatcher.group(1);
+                        Log.d("link1", link);
+                        links.add(link.toString());
+                    }
+                }
             }
         }
     }
@@ -183,7 +187,7 @@ public class YesterdayFragment extends Fragment {
         for (int i = 0; i < titles.size(); i++) {
             Integer rank = i+1;
             String ranking = rank.toString()+"위";
-            data.add(new DataClass(ranking, titles.get(i), traffics.get(i), images.get(i), links_array.get(i)));
+            data.add(new DataClass(ranking, titles.get(i), traffics.get(i), images.get(i), links.get(i)));
         }
 
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerview);

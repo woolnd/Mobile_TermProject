@@ -145,8 +145,6 @@ public class TodayFragment extends Fragment {
                 titles.add(title);
                 traffics.add(traffic);
                 images.add(image);
-                Log.d("date123", title);
-                Log.d("date123", traffic);
             }
         }
 
@@ -154,7 +152,6 @@ public class TodayFragment extends Fragment {
             if(linkMatcher.find()){
                 String link = linkMatcher.group(1);
                 links.add(link.toString());
-                Log.d("date12", link);
             }
         }
 
