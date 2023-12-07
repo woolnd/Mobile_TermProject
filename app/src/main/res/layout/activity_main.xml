@@ -191,6 +191,45 @@
         app:layout_constraintEnd_toEndOf="@id/fab_mypage"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="google"
+        android:src="@drawable/google"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        app:maxImageSize="40dp"
+        app:layout_constraintTop_toTopOf="@id/fab_search"
+        app:layout_constraintEnd_toStartOf="@id/fab_search"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_naver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="naver"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/naver"
+        app:maxImageSize="40dp"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        app:layout_constraintTop_toTopOf="@id/fab_search"
+        app:layout_constraintEnd_toStartOf="@id/fab_google"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_daum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="daum"
+        android:src="@drawable/daum"
+        app:maxImageSize="40dp"
+        android:backgroundTint="#B9E0FD"
+        app:tint="@android:color/white"
+        app:layout_constraintTop_toTopOf="@id/fab_naver"
+        app:layout_constraintEnd_toStartOf="@id/fab_naver"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

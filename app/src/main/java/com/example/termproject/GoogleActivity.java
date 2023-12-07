@@ -2,7 +2,6 @@ package com.example.termproject;
 
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -11,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-public class SearchActivity extends AppCompatActivity {
+public class GoogleActivity extends AppCompatActivity {
 
     private WebView webView;
     private ImageView back;
@@ -19,7 +18,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_google);
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 

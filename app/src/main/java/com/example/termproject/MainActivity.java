@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -58,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1; //SettingActivity로 전환할 때 사용할 요청 코드
     private TabLayout tabLayout;
 
-    private FloatingActionButton fab_main, fab_mypage, fab_search, fab_refresh;
-    private Animation fab_open, fab_close;
+    private FloatingActionButton fab_main, fab_mypage, fab_search, fab_refresh, fab_google, fab_naver, fab_daum;
+    private Animation fab_open, fab_close, fab_stay, fab_clear;
     private boolean isFabOpen = false;
+    private boolean isSearch = false;
     private Context mContext;
 
     @Override
@@ -71,11 +73,16 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
+        fab_stay = AnimationUtils.loadAnimation(mContext, R.anim.fab_stay);
+        fab_clear = AnimationUtils.loadAnimation(mContext, R.anim.fab_close_all);
 
         fab_main = findViewById(R.id.fab_main);
         fab_mypage = findViewById(R.id.fab_mypage);
         fab_search = findViewById(R.id.fab_search);
         fab_refresh = findViewById(R.id.fab_refresh);
+        fab_google = findViewById(R.id.fab_google);
+        fab_naver = findViewById(R.id.fab_naver);
+        fab_daum = findViewById(R.id.fab_daum);
 
         fab_mypage.startAnimation(fab_close);
         fab_mypage.setClickable(false);
@@ -83,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
         fab_search.setClickable(false);
         fab_refresh.startAnimation(fab_close);
         fab_refresh.setClickable(false);
+        fab_google.startAnimation(fab_close);
+        fab_google.setClickable(false);
+        fab_naver.startAnimation(fab_close);
+        fab_naver.setClickable(false);
+        fab_daum.startAnimation(fab_close);
+        fab_daum.setClickable(false);
+
 
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +123,30 @@ public class MainActivity extends AppCompatActivity {
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                toggleSearch();
+            }
+        });
+
+        fab_google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, GoogleActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fab_naver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NaverActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fab_daum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DaumActivity.class);
                 startActivity(intent);
             }
         });
@@ -120,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = getIntent(); //인텐트
                 startActivity(intent); //액티비티 열기
                 overridePendingTransition(0, 0);//인텐트 효과 없애기
+                Toast.makeText(MainActivity.this, "새로고침", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         PagerAdapter viewPager2Adapter
@@ -131,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(viewPager2Adapter);
 
         //=== TabLayout기능 추가 부분 ============================================
-        tabLayout  = findViewById(R.id.tablayout);
+        tabLayout = findViewById(R.id.tablayout);
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -172,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         //getCurrentWeek()함수 반환값은 1: 일요일 2:월요일..
         //숫자 값으로 요일 작성
-        switch (getCurrentWeek()){
+        switch (getCurrentWeek()) {
             case 1:
                 week_view.setText("일요일");
                 break;
@@ -203,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 시간대에 따라 배경 이미지 및 글자 색상 변경
         //9시부터 18시전에는 낮에 대한 이미지와 파란 글자색으로 변경
-        if(time<18 && time >=9){
+        if (time < 18 && time >= 9) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.afternoon));
             top.setBackgroundResource(R.drawable.afternoon);
             description_view.setTextColor(Color.parseColor("#99ccff"));
@@ -219,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //21시부터 06시전에는 밤에 대한 이미지와 남색 글자색 변경
-        else if(time>=21 || time < 6){
+        else if (time >= 21 || time < 6) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.night));
             top.setBackgroundResource(R.drawable.night);
             description_view.setTextColor(Color.parseColor("#000080"));
@@ -249,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#FF9F5A"));
         }
     }
-    
+
     //url로 이미지를 가져와 변환 후 imageview에 적용
     private void loadImage(String imageUrl) {
         new Thread(new Runnable() {
@@ -306,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
     public static String getCurrentTime() {
         long now = System.currentTimeMillis(); // 현재 시간을 milliseconds 단위로 가져옴
         Date currentTime = new Date(now); // milliseconds를 현재 시간으로 변환하여 Date 객체 생성
-        DateFormat dateFormat = new SimpleDateFormat("HH");	// 시간 형식을 지정 ("HH"는 24시간 형식)
+        DateFormat dateFormat = new SimpleDateFormat("HH");    // 시간 형식을 지정 ("HH"는 24시간 형식)
 
         return dateFormat.format(currentTime);  // 현재 시간을 지정한 형식으로 문자열로 반환
     }
@@ -347,25 +384,25 @@ public class MainActivity extends AppCompatActivity {
                     // API 응답 처리
                     JsonObject mainObject = response.body().getAsJsonObject("main");
                     double temp = mainObject.get("temp").getAsDouble() - 275.15; // "temp"(현재기온)값을 받아서 변환한 후 계산
-                    String temp_format = "현재 "+String.format("%.2f", temp)+"°C"; // 두 번째 소수 자리까지 포맷팅
+                    String temp_format = "현재 " + String.format("%.2f", temp) + "°C"; // 두 번째 소수 자리까지 포맷팅
                     temp_view.setText(temp_format); // TextView에 출력
 
                     double feel_like = mainObject.get("feels_like").getAsDouble() - 275.15; // "temp_max"(최고기온)값을 받아서 변환한 후 계산
-                    String feel_like_format = "체감 "+String.format("%.2f", feel_like)+"°C"; // 두 번째 소수 자리까지 포맷팅
+                    String feel_like_format = "체감 " + String.format("%.2f", feel_like) + "°C"; // 두 번째 소수 자리까지 포맷팅
                     feel_view.setText(feel_like_format); // TextView에 출력
 
                     JsonObject windObject = response.body().getAsJsonObject("wind"); // 바람 관련 정보 처리
                     double wind = windObject.get("speed").getAsDouble(); //"speed"(속력)값을 받아서 저장
-                    String wind_format = "바람 "+String.format("%.1f", wind)+"m/s"; //첫 번째 소수 자리와 바람의 단위 포맷팅
+                    String wind_format = "바람 " + String.format("%.1f", wind) + "m/s"; //첫 번째 소수 자리와 바람의 단위 포맷팅
                     wind_view.setText(wind_format); // TextView에 출력
 
                     double humidity = mainObject.get("humidity").getAsDouble();  //"humidity"(습도)값을 받아서 저장
-                    String humidity_format = " / 습도 "+String.format("%.0f", humidity)+"%"; //소수 자리 없이 습도의 단위 포맷팅
+                    String humidity_format = " / 습도 " + String.format("%.0f", humidity) + "%"; //소수 자리 없이 습도의 단위 포맷팅
                     humidity_view.setText(humidity_format); // TextView에 출력
 
                     JsonObject cloudObject = response.body().getAsJsonObject("clouds"); // 구름 관련 정보 처리
                     double cloud = cloudObject.get("all").getAsDouble(); //"cloud"(구름)값을 받아서 저장
-                    String cloud_format = " / 구름 "+String.format("%.0f", cloud)+"%"; //소수 자리 없이 구름의 단위 포맷팅
+                    String cloud_format = " / 구름 " + String.format("%.0f", cloud) + "%"; //소수 자리 없이 구름의 단위 포맷팅
                     cloud_view.setText(cloud_format); // TextView에 출력
 
 
@@ -399,22 +436,63 @@ public class MainActivity extends AppCompatActivity {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.fab_main_1);
             fab_mypage.startAnimation(fab_close);
-            fab_mypage.setClickable(false);
             fab_search.startAnimation(fab_close);
-            fab_search.setClickable(false);
             fab_refresh.startAnimation(fab_close);
+            if(isSearch){
+                fab_google.startAnimation(fab_close);
+                fab_naver.startAnimation(fab_close);
+                fab_daum.startAnimation(fab_close);
+                isSearch = false;
+            }else{
+                fab_google.startAnimation(fab_clear);
+                fab_naver.startAnimation(fab_clear);
+                fab_daum.startAnimation(fab_clear);
+            }
+
+            fab_mypage.setClickable(false);
+            fab_search.setClickable(false);
             fab_refresh.setClickable(false);
+            fab_google.setClickable(false);
+            fab_naver.setClickable(false);
+            fab_daum.setClickable(false);
             isFabOpen = false;
         } else {
             fab_main.setImageResource(R.drawable.fab_main_2);
             fab_mypage.startAnimation(fab_open);
-            fab_mypage.setClickable(true);
             fab_search.startAnimation(fab_open);
-            fab_search.setClickable(true);
             fab_refresh.startAnimation(fab_open);
+
+            fab_mypage.setClickable(true);
+            fab_search.setClickable(true);
             fab_refresh.setClickable(true);
             isFabOpen = true;
         }
     }
 
+    private void toggleSearch() {
+        if (isSearch) {
+            fab_google.startAnimation(fab_close); // Clear any ongoing animations
+            fab_naver.startAnimation(fab_close);
+            fab_daum.startAnimation(fab_close);
+
+            fab_google.setClickable(false);
+            fab_naver.setClickable(false);
+            fab_daum.setClickable(false);
+            isSearch = false;
+        } else {
+            fab_google.startAnimation(fab_open); // Clear any ongoing animations
+            fab_naver.startAnimation(fab_open);
+            fab_daum.startAnimation(fab_open);
+            fab_mypage.startAnimation(fab_stay);
+            fab_search.startAnimation(fab_stay);
+            fab_refresh.startAnimation(fab_stay);
+
+            fab_google.setClickable(true);
+            fab_naver.setClickable(true);
+            fab_daum.setClickable(true);
+            isSearch = true;
+        }
+
+
+    }
 }

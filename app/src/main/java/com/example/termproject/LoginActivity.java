@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("email", personEmail); // 이메일 전달
                 intent.putExtra("url", photoUrlString); // 프로필 사진 URL 전달
                 startActivity(intent); // MainActivity 시작
+                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
             }
         } catch (ApiException e) {
             Log.e(TAG, "signInResult:failed code=" + e.getStatusCode()); // 로그인 실패 시 에러 코드 로그

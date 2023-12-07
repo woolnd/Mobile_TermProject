@@ -19,7 +19,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="프로필"
+        android:text="마이페이지"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginTop="20dp"

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -59,6 +60,7 @@ public class SettingActivity extends AppCompatActivity {
         ImageView back = findViewById(R.id.back);
         TextView email_text = findViewById(R.id.email);
         TextView name_text = findViewById(R.id.name);
+        TextView btn_text = findViewById(R.id.citybtntext);
         EditText city_text = findViewById(R.id.city);
         ImageView logout = findViewById(R.id.logoutbtn);
 
@@ -80,6 +82,7 @@ public class SettingActivity extends AppCompatActivity {
                 Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+                Toast.makeText(SettingActivity.this, "로그아웃 성공", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -105,14 +108,24 @@ public class SettingActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 //입력된 글자를 string으로 변환후 텍스트뷰에 추가
                 String str = city_text.getText().toString();
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("key", str); // 데이터 추가
-                        setResult(Activity.RESULT_OK, resultIntent);
-                    }
-                });
+                if(str.equals("")){
+                    btn.setImageResource(R.drawable.box_button);
+                    btn_text.setTextColor(Color.parseColor("#B5B6BD"));
+                }
+                else{
+                    btn.setImageResource(R.drawable.box_button_after);
+                    btn_text.setTextColor(Color.parseColor("#ffffff"));
+
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("key", str); // 데이터 추가
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
+                        }
+                    });
+                }
             }
         });
     }
@@ -154,17 +167,7 @@ public class SettingActivity extends AppCompatActivity {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
                     mAuth.signOut();
-                    Toast.makeText(SettingActivity.this, "로그아웃 성공", Toast.LENGTH_SHORT).show();
-                    // ...
                 });
         gsa = null;
-    }
-
-    /* 회원 삭제요청 */
-    private void revokeAccess() {
-        mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(this, task -> {
-                    // ...
-                });
     }
 }
