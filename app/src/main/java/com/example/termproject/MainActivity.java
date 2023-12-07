@@ -85,17 +85,22 @@ public class MainActivity extends AppCompatActivity {
         fab_daum = findViewById(R.id.fab_daum);
 
         fab_mypage.startAnimation(fab_close);
-        fab_mypage.setClickable(false);
+        fab_mypage.setVisibility(View.GONE);
+
         fab_search.startAnimation(fab_close);
-        fab_search.setClickable(false);
+        fab_search.setVisibility(View.GONE);
+
         fab_refresh.startAnimation(fab_close);
-        fab_refresh.setClickable(false);
+        fab_refresh.setVisibility(View.GONE);
+
         fab_google.startAnimation(fab_close);
-        fab_google.setClickable(false);
+        fab_google.setVisibility(View.GONE);
+
         fab_naver.startAnimation(fab_close);
-        fab_naver.setClickable(false);
+        fab_naver.setVisibility(View.GONE);
+
         fab_daum.startAnimation(fab_close);
-        fab_daum.setClickable(false);
+        fab_daum.setVisibility(View.GONE);
 
 
         fab_main.setOnClickListener(new View.OnClickListener() {
@@ -435,35 +440,42 @@ public class MainActivity extends AppCompatActivity {
     private void toggleFab() {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.fab_main_1);
-            fab_mypage.startAnimation(fab_close);
-            fab_search.startAnimation(fab_close);
-            fab_refresh.startAnimation(fab_close);
-            if(isSearch){
-                fab_google.startAnimation(fab_close);
-                fab_naver.startAnimation(fab_close);
-                fab_daum.startAnimation(fab_close);
-                fab_google.setClickable(false);
-                fab_naver.setClickable(false);
-                fab_daum.setClickable(false);
-                isSearch = false;
-            }else{
-                fab_google.startAnimation(fab_clear);
-                fab_naver.startAnimation(fab_clear);
-                fab_daum.startAnimation(fab_clear);
-                fab_google.setClickable(false);
-                fab_naver.setClickable(false);
-                fab_daum.setClickable(false);
-            }
-
             fab_mypage.setClickable(false);
             fab_search.setClickable(false);
             fab_refresh.setClickable(false);
-            fab_google.setClickable(false);
-            fab_naver.setClickable(false);
-            fab_daum.setClickable(false);
+
+            fab_mypage.startAnimation(fab_close);
+            fab_search.startAnimation(fab_close);
+            fab_refresh.startAnimation(fab_close);
+
+            if(isSearch){
+                fab_google.setClickable(false);
+                fab_naver.setClickable(false);
+                fab_daum.setClickable(false);
+
+                fab_google.startAnimation(fab_close);
+                fab_naver.startAnimation(fab_close);
+                fab_daum.startAnimation(fab_close);
+
+                isSearch = false;
+            }else{
+                fab_google.setClickable(false);
+                fab_naver.setClickable(false);
+                fab_daum.setClickable(false);
+
+                fab_google.startAnimation(fab_clear);
+                fab_naver.startAnimation(fab_clear);
+                fab_daum.startAnimation(fab_clear);
+
+            }
             isFabOpen = false;
         } else {
             fab_main.setImageResource(R.drawable.fab_main_2);
+
+            fab_mypage.setVisibility(View.VISIBLE);
+            fab_search.setVisibility(View.VISIBLE);
+            fab_refresh.setVisibility(View.VISIBLE);
+
             fab_mypage.startAnimation(fab_open);
             fab_search.startAnimation(fab_open);
             fab_refresh.startAnimation(fab_open);
@@ -471,24 +483,32 @@ public class MainActivity extends AppCompatActivity {
             fab_mypage.setClickable(true);
             fab_search.setClickable(true);
             fab_refresh.setClickable(true);
+
             isFabOpen = true;
         }
     }
 
     private void toggleSearch() {
         if (isSearch) {
+            fab_google.setClickable(false);
+            fab_naver.setClickable(false);
+            fab_daum.setClickable(false);
+
             fab_google.startAnimation(fab_close); // Clear any ongoing animations
             fab_naver.startAnimation(fab_close);
             fab_daum.startAnimation(fab_close);
 
-            fab_google.setClickable(false);
-            fab_naver.setClickable(false);
-            fab_daum.setClickable(false);
+
             isSearch = false;
         } else {
+            fab_google.setVisibility(View.VISIBLE);
+            fab_naver.setVisibility(View.VISIBLE);
+            fab_daum.setVisibility(View.VISIBLE);
+
             fab_google.startAnimation(fab_open); // Clear any ongoing animations
             fab_naver.startAnimation(fab_open);
             fab_daum.startAnimation(fab_open);
+
             fab_mypage.startAnimation(fab_stay);
             fab_search.startAnimation(fab_stay);
             fab_refresh.startAnimation(fab_stay);
