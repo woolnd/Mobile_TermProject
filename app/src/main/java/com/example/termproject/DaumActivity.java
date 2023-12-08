@@ -20,11 +20,13 @@ public class DaumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daum);
 
+        // 상태 바 색상을 흰색으로 설정
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
-        back = findViewById(R.id.back);
-        webView = findViewById(R.id.google);
+        back = findViewById(R.id.back); // '뒤로 가기' 이미지 뷰
+        webView = findViewById(R.id.google); // 웹뷰 설정
 
+        // '뒤로 가기' 이미지 버튼 클릭 시 현재 액티비티 종료
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,9 +34,10 @@ public class DaumActivity extends AppCompatActivity {
             }
         });
 
-        webView.setWebViewClient(new WebViewClient());
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.loadUrl("https://www.daum.net");
+        // 웹뷰 설정
+        webView.setWebViewClient(new WebViewClient()); // 웹뷰에서 새 창이 뜨지 않도록 처리
+        webView.getSettings().setJavaScriptEnabled(true); // 자바스크립트 사용 가능하도록 설정
+        webView.getSettings().setUseWideViewPort(true); // 화면 사이즈 맞춤
+        webView.loadUrl("https://www.daum.net"); // 다음 홈페이지 로드
     }
 }

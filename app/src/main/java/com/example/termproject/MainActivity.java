@@ -71,11 +71,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = getApplicationContext();
+
+        //플로팅 메세지 애니메이션
         fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         fab_stay = AnimationUtils.loadAnimation(mContext, R.anim.fab_stay);
         fab_clear = AnimationUtils.loadAnimation(mContext, R.anim.fab_close_all);
 
+        //플로팅 버튼 초기화
         fab_main = findViewById(R.id.fab_main);
         fab_mypage = findViewById(R.id.fab_mypage);
         fab_search = findViewById(R.id.fab_search);
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         fab_naver = findViewById(R.id.fab_naver);
         fab_daum = findViewById(R.id.fab_daum);
 
+        //플로팅 버튼 초기 설정
         fab_mypage.startAnimation(fab_close);
         fab_mypage.setVisibility(View.GONE);
 
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         fab_daum.setVisibility(View.GONE);
 
 
+        //클릭 시 toggleFab()함수
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 인텐트에 정보(이메일, 이름, 프로필 url, 도시)를 담아 액티비티 전환
         fab_mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 toggleSearch()함수 실행
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 구글페이지로 액티비티 전환
         fab_google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 네이버페이지로 액티비티 전환
         fab_naver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 다음페이지로 액티비티 전환
         fab_daum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,17 +166,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //클릭 시 새로고침을 함
         fab_refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent(); //인텐트
-                startActivity(intent); //액티비티 열기
+                Intent intent = getIntent(); //새로운 인텐트로 현재 액티비티 재 이동
+                startActivity(intent);
                 overridePendingTransition(0, 0);//인텐트 효과 없애기
                 Toast.makeText(MainActivity.this, "새로고침", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+        //ViewPager2와 TabLayout을 함께 사용하여 스와이프 가능한 탭 기능을 구현
         PagerAdapter viewPager2Adapter
                 = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         ViewPager2 viewPager2 = findViewById(R.id.vp);
@@ -174,8 +186,10 @@ public class MainActivity extends AppCompatActivity {
 
         //=== TabLayout기능 추가 부분 ============================================
         tabLayout = findViewById(R.id.tablayout);
+        //TabLayoutMediator를 사용하여 TabLayout과 ViewPager2를 연결
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
+            // 탭의 위치(position)에 따라 각 탭에 표시될 텍스트를 지정
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0:
@@ -189,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attach();
 
+        //loadWeatherInfo함수 실행
         loadWeatherInfo(city);
 
 
@@ -439,86 +454,92 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleFab() {
         if (isFabOpen) {
-            fab_main.setImageResource(R.drawable.fab_main_1);
-            fab_mypage.setClickable(false);
-            fab_search.setClickable(false);
-            fab_refresh.setClickable(false);
+            // 현재 FAB 메뉴가 열려있는 상태일 때
+            fab_main.setImageResource(R.drawable.fab_main_1); // 메인 FAB 이미지 변경
+            fab_mypage.setClickable(false); // 마이페이지 FAB 클릭 불가능
+            fab_search.setClickable(false); // 검색 FAB 클릭 불가능
+            fab_refresh.setClickable(false); // 새로고침 FAB 클릭 불가능
 
+            // 각 FAB를 닫힌 상태로 애니메이션을 주면서 숨김
             fab_mypage.startAnimation(fab_close);
             fab_search.startAnimation(fab_close);
             fab_refresh.startAnimation(fab_close);
 
-            if(isSearch){
-                fab_google.setClickable(false);
-                fab_naver.setClickable(false);
-                fab_daum.setClickable(false);
+            if (isSearch) {
+                // 검색이 열려있는 상태일 때
+                fab_google.setClickable(false); // 구글 검색 FAB 클릭 불가능
+                fab_naver.setClickable(false); // 네이버 검색 FAB 클릭 불가능
+                fab_daum.setClickable(false); // 다음 검색 FAB 클릭 불가능
 
+                // 각 검색 FAB를 닫힌 상태로 애니메이션을 주면서 숨김
                 fab_google.startAnimation(fab_close);
                 fab_naver.startAnimation(fab_close);
                 fab_daum.startAnimation(fab_close);
 
-                isSearch = false;
-            }else{
-                fab_google.setClickable(false);
-                fab_naver.setClickable(false);
-                fab_daum.setClickable(false);
+                isSearch = false; // 검색 FAB들을 닫은 상태로 변경
+            } else {
+                // 검색이 닫혀있는 상태일 때
+                fab_google.setClickable(false); // 구글 검색 FAB 클릭 불가능
+                fab_naver.setClickable(false); // 네이버 검색 FAB 클릭 불가능
+                fab_daum.setClickable(false); // 다음 검색 FAB 클릭 불가능
 
+                // 각 검색 FAB를 닫힌 상태로 애니메이션을 주면서 숨김
                 fab_google.startAnimation(fab_clear);
                 fab_naver.startAnimation(fab_clear);
                 fab_daum.startAnimation(fab_clear);
-
             }
-            isFabOpen = false;
-        } else {
-            fab_main.setImageResource(R.drawable.fab_main_2);
 
+            isFabOpen = false; // FAB 메뉴를 닫은 상태로 변경
+        } else {
+            // 현재 FAB 메뉴가 닫혀있는 상태일 때
+            fab_main.setImageResource(R.drawable.fab_main_2); // 메인 FAB 이미지 변경
+
+            // 각 FAB를 보이도록 설정하고, 애니메이션을 주면서 확장시킴
             fab_mypage.setVisibility(View.VISIBLE);
             fab_search.setVisibility(View.VISIBLE);
             fab_refresh.setVisibility(View.VISIBLE);
-
             fab_mypage.startAnimation(fab_open);
             fab_search.startAnimation(fab_open);
             fab_refresh.startAnimation(fab_open);
+            fab_mypage.setClickable(true); // 마이페이지 FAB 클릭 가능
+            fab_search.setClickable(true); // 검색 FAB 클릭 가능
+            fab_refresh.setClickable(true); // 새로고침 FAB 클릭 가능
 
-            fab_mypage.setClickable(true);
-            fab_search.setClickable(true);
-            fab_refresh.setClickable(true);
-
-            isFabOpen = true;
+            isFabOpen = true; // FAB 메뉴를 열린 상태로 변경
         }
     }
 
     private void toggleSearch() {
         if (isSearch) {
-            fab_google.setClickable(false);
-            fab_naver.setClickable(false);
-            fab_daum.setClickable(false);
+            // 현재 검색 FAB 메뉴가 열려있는 상태일 때
+            fab_google.setClickable(false); // 구글 검색 FAB 클릭 불가능
+            fab_naver.setClickable(false); // 네이버 검색 FAB 클릭 불가능
+            fab_daum.setClickable(false); // 다음 검색 FAB 클릭 불가능
 
-            fab_google.startAnimation(fab_close); // Clear any ongoing animations
+            // 각 검색 FAB를 닫힌 상태로 애니메이션을 주면서 숨김
+            fab_google.startAnimation(fab_close);
             fab_naver.startAnimation(fab_close);
             fab_daum.startAnimation(fab_close);
 
-
-            isSearch = false;
+            isSearch = false; // 검색 FAB 메뉴를 닫은 상태로 변경
         } else {
+            // 현재 검색 FAB 메뉴가 닫혀있는 상태일 때
             fab_google.setVisibility(View.VISIBLE);
             fab_naver.setVisibility(View.VISIBLE);
             fab_daum.setVisibility(View.VISIBLE);
 
-            fab_google.startAnimation(fab_open); // Clear any ongoing animations
+            // 각 검색 FAB를 보이도록 설정하고, 애니메이션을 주면서 확장시킴
+            fab_google.startAnimation(fab_open);
             fab_naver.startAnimation(fab_open);
             fab_daum.startAnimation(fab_open);
-
             fab_mypage.startAnimation(fab_stay);
             fab_search.startAnimation(fab_stay);
             fab_refresh.startAnimation(fab_stay);
+            fab_google.setClickable(true); // 구글 검색 FAB 클릭 가능
+            fab_naver.setClickable(true); // 네이버 검색 FAB 클릭 가능
+            fab_daum.setClickable(true); // 다음 검색 FAB 클릭 가능
 
-            fab_google.setClickable(true);
-            fab_naver.setClickable(true);
-            fab_daum.setClickable(true);
-            isSearch = true;
+            isSearch = true; // 검색 FAB 메뉴를 열린 상태로 변경
         }
-
-
     }
 }

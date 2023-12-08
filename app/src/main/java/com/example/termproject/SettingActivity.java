@@ -44,18 +44,23 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        // 상태 표시줄 색상 설정
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
+        // Firebase 인증 인스턴스 초기화
         mAuth = FirebaseAuth.getInstance();
 
+        // GoogleSignInAccount 초기화
         gsa = GoogleSignIn.getLastSignedInAccount(SettingActivity.this);
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
+        // GoogleSignInClient 초기화
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
+        // 뷰 요소 초기화
         ImageView btn = findViewById(R.id.citybtn);
         ImageView back = findViewById(R.id.back);
         TextView email_text = findViewById(R.id.email);
@@ -64,29 +69,33 @@ public class SettingActivity extends AppCompatActivity {
         EditText city_text = findViewById(R.id.city);
         ImageView logout = findViewById(R.id.logoutbtn);
 
+        // Intent로부터 데이터 받기
         String email = getIntent().getStringExtra("email");
         String name = getIntent().getStringExtra("name");
         String url = getIntent().getStringExtra("url");
         String city = getIntent().getStringExtra("city");
 
+        // 이미지 로드 및 텍스트 설정
         loadImage(url);
         email_text.setText(email);
         name_text.setText(name);
         String hint = "현재 도시는" + city + "입니다.";
         city_text.setHint(hint);
 
+        // 로그아웃 버튼 클릭 시
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signOut();
+                signOut();  // 로그아웃
                 Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();
+                finish(); // 액티비티 종료
                 Toast.makeText(SettingActivity.this, "로그아웃 성공", Toast.LENGTH_SHORT).show();
 
             }
         });
 
+        // 뒤로가기 버튼 클릭 시 현재 액티비티 종료
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +103,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        // EditText 입력 감지를 통한 도시 설정 및 버튼 동작
         city_text.addTextChangedListener(new TextWatcher() {
             @Override
             //입력전 변경
@@ -106,16 +116,20 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             //입력후 변경
             public void afterTextChanged(Editable editable) {
-                //입력된 글자를 string으로 변환후 텍스트뷰에 추가
-                String str = city_text.getText().toString();
+                String str = city_text.getText().toString(); // 입력된 도시명 저장
                 if(str.equals("")){
+                    // 입력값이 없을 경우
+                    // 버튼 이미지, 텍스트 색상 변경
                     btn.setImageResource(R.drawable.box_button);
                     btn_text.setTextColor(Color.parseColor("#B5B6BD"));
                 }
                 else{
+                    // 입력값이 있는 경우
+                    // 버튼 이미지, 텍스트 색상 변경
                     btn.setImageResource(R.drawable.box_button_after);
                     btn_text.setTextColor(Color.parseColor("#ffffff"));
 
+                    // 버튼 클릭 시 설정된 도시 정보를 이전 화면으로 전달하고 액티비티 종료
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -163,11 +177,12 @@ public class SettingActivity extends AppCompatActivity {
         }).start(); // 스레드 실행
     }
 
+    // 사용자 로그아웃 메서드
     private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                    mAuth.signOut();
+        mGoogleSignInClient.signOut() //GoogleSignInClient를 사용하여 사용자의 Google 계정에서 로그아웃을 시도
+                .addOnCompleteListener(this, task -> { //로그아웃 작업이 완료되면, 완료 리스너(addOnCompleteListener)가 호출
+                    mAuth.signOut(); //이 리스너에서는 Firebase의 인증 객체(mAuth)를 사용하여 Firebase에 대한 로그아웃을 시도
                 });
-        gsa = null;
+        gsa = null; //GoogleSignInAccount 객체를 null로 설정하여 로그아웃된 사용자 정보를 초기화
     }
 }
