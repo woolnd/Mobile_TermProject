@@ -36,7 +36,6 @@ public class YesterdayFragment extends Fragment {
     private ArrayList<String> traffics;
 
     private ArrayList<String> links;
-    private ArrayList<String> links_array;
     String todayDate;
     String yesterdayDate;
     SimpleDateFormat dateFormat;
@@ -55,7 +54,6 @@ public class YesterdayFragment extends Fragment {
         titles = new ArrayList<>();
         traffics = new ArrayList<>();
         links = new ArrayList<>();
-        links_array = new ArrayList<>();
         titles_today = new ArrayList<>();
 
         return inflater.inflate(R.layout.fragment_yesterday, container, false);
@@ -183,7 +181,7 @@ public class YesterdayFragment extends Fragment {
         for(int i = 0; i< (titles.size()+titles_today.size())*2; i++){
             if(linkMatcher.find()){
                 if(i>titles_today.size()*2-2){
-                    if(i%2!=0){
+                    if(i%2==0){
                         String link = linkMatcher.group(1);
                         Log.d("link1", link);
                         links.add(link.toString());
@@ -202,7 +200,7 @@ public class YesterdayFragment extends Fragment {
             String ranking = rank.toString()+"위";
 
             //순위, 제목, 조횟수, 이미지 URL, 뉴스 링크를 가진 DataClass 객체를 생성하고 data 배열에 추가
-            data.add(new DataClass(ranking, titles.get(i), traffics.get(i), images.get(i), links_array.get(i)));
+            data.add(new DataClass(ranking, titles.get(i), traffics.get(i), images.get(i), links.get(i)));
         }
 
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerview);
